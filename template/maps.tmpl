@@ -1,0 +1,11 @@
+package currency
+
+var currencyByAlphabeticCode = map[string]ISO{
+{{- range .Alphabetic}}
+	"{{.AlphabeticCode}}": {AlphabeticCode: "{{.AlphabeticCode}}", NumericCode: "{{.NumericCode}}", MinorUnits: "{{.MinorUnits}}", Name: "{{.Name}}", CountryNames: {{.CountryName}}},{{end}}
+}
+
+var alphabeticCodeByNumericCode = map[string]string{
+{{- range .Numeric}}
+	"{{.NumericCode}}": "{{.AlphabeticCode}}",{{end}}
+}
