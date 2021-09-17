@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+//go:generate go run ./cmd
+
 // ISO represents one currency in ISO 4217 format
 type ISO struct {
 	// The alphabetic code is based on another ISO standard, ISO 3166, which lists the codes for country names.
