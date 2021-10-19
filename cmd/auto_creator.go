@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	currency "github.com/gromey/iso-currency"
+	"github.com/gromey/iso-currency"
 	"io/ioutil"
 	"net/http"
 	"os"
