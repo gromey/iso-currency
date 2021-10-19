@@ -2,7 +2,7 @@ package currency_test
 
 import (
 	"fmt"
-	currency "github.com/gromey/iso-currency"
+	"github.com/gromey/iso-currency"
 	"reflect"
 	"testing"
 )
