@@ -1,33 +1,46 @@
-package currency_test
+package currency
 
 import (
 	"fmt"
-	"github.com/gromey/iso-currency"
 	"reflect"
 	"testing"
 )
 
 var (
-	expectEUR = &currency.ISO{
-		AlphabeticCode: "EUR",
-		NumericCode:    "978",
-		MinorUnits:     "2",
-		Name:           "Euro",
-		CountryNames:   []string{"ÅLAND ISLANDS", "ANDORRA", "AUSTRIA", "BELGIUM", "CYPRUS", "ESTONIA", "EUROPEAN UNION", "FINLAND", "FRANCE", "FRENCH GUIANA", "FRENCH SOUTHERN TERRITORIES (THE)", "GERMANY", "GREECE", "GUADELOUPE", "HOLY SEE (THE)", "IRELAND", "ITALY", "LATVIA", "LITHUANIA", "LUXEMBOURG", "MALTA", "MARTINIQUE", "MAYOTTE", "MONACO", "MONTENEGRO", "NETHERLANDS (THE)", "PORTUGAL", "RÉUNION", "SAINT BARTHÉLEMY", "SAINT MARTIN (FRENCH PART)", "SAINT PIERRE AND MIQUELON", "SAN MARINO", "SLOVAKIA", "SLOVENIA", "SPAIN"},
+	expectALL = &ISO{
+		AlphabeticCode: "ALL",
+		NumericCode:    numericCode{Value: 8},
+		MinorUnits:     minorUnits{Value: 2, Valid: true},
+		Name:           "Lek",
+		CountryNames:   []string{"ALBANIA"},
 	}
-	expectBOV = &currency.ISO{
-		AlphabeticCode: "BOV",
-		NumericCode:    "984",
-		MinorUnits:     "2",
-		Name:           "Mvdol",
-		CountryNames:   []string{"BOLIVIA (PLURINATIONAL STATE OF)"},
+	expectBHD = &ISO{
+		AlphabeticCode: "BHD",
+		NumericCode:    numericCode{Value: 48},
+		MinorUnits:     minorUnits{Value: 3, Valid: true},
+		Name:           "Bahraini Dinar",
+		CountryNames:   []string{"BAHRAIN"},
 	}
-	expectUSD = &currency.ISO{
-		AlphabeticCode: "USD",
-		NumericCode:    "840",
-		MinorUnits:     "2",
-		Name:           "US Dollar",
-		CountryNames:   []string{"AMERICAN SAMOA", "BONAIRE, SINT EUSTATIUS AND SABA", "BRITISH INDIAN OCEAN TERRITORY (THE)", "ECUADOR", "EL SALVADOR", "GUAM", "HAITI", "MARSHALL ISLANDS (THE)", "MICRONESIA (FEDERATED STATES OF)", "NORTHERN MARIANA ISLANDS (THE)", "PALAU", "PANAMA", "PUERTO RICO", "TIMOR-LESTE", "TURKS AND CAICOS ISLANDS (THE)", "UNITED STATES MINOR OUTLYING ISLANDS (THE)", "UNITED STATES OF AMERICA (THE)", "VIRGIN ISLANDS (BRITISH)", "VIRGIN ISLANDS (U.S.)"},
+	expectCLF = &ISO{
+		AlphabeticCode: "CLF",
+		NumericCode:    numericCode{Value: 990},
+		MinorUnits:     minorUnits{Value: 4, Valid: true},
+		Name:           "Unidad de Fomento",
+		CountryNames:   []string{"CHILE"},
+	}
+	expectVND = &ISO{
+		AlphabeticCode: "VND",
+		NumericCode:    numericCode{Value: 704},
+		MinorUnits:     minorUnits{Value: 0, Valid: true},
+		Name:           "Dong",
+		CountryNames:   []string{"VIET NAM"},
+	}
+	expectXAU = &ISO{
+		AlphabeticCode: "XAU",
+		NumericCode:    numericCode{Value: 959},
+		MinorUnits:     minorUnits{Value: 0, Valid: false},
+		Name:           "Gold",
+		CountryNames:   []string{"ZZ08_Gold"},
 	}
 )
 
@@ -39,33 +52,38 @@ func equal(t *testing.T, exp, got interface{}) {
 
 func TestByAlphabeticCode(t *testing.T) {
 	var tests = []struct {
-		alphabeticCode string
-		expectISO      *currency.ISO
+		AlphabeticCode string
+		expectISO      *ISO
 		err            error
 	}{
 		{
-			alphabeticCode: "EUR",
-			expectISO:      expectEUR,
-			err:            nil,
+			AlphabeticCode: "ALL",
+			expectISO:      expectALL,
 		},
 		{
-			alphabeticCode: "bov",
-			expectISO:      expectBOV,
-			err:            nil,
+			AlphabeticCode: "bhd",
+			expectISO:      expectBHD,
 		},
 		{
-			alphabeticCode: "usD",
-			expectISO:      expectUSD,
-			err:            nil,
+			AlphabeticCode: "Clf",
+			expectISO:      expectCLF,
 		},
 		{
-			alphabeticCode: "ERU",
+			AlphabeticCode: "vNd",
+			expectISO:      expectVND,
+		},
+		{
+			AlphabeticCode: "xaU",
+			expectISO:      expectXAU,
+		},
+		{
+			AlphabeticCode: "ERU",
 			expectISO:      nil,
-			err:            fmt.Errorf("%s: %s", currency.ErrAlphaCode, "ERU"),
+			err:            fmt.Errorf("%s: %s", ErrAlphaCode, "ERU"),
 		},
 	}
 	for _, tt := range tests {
-		iso, err := currency.ByAlphabeticCode(tt.alphabeticCode)
+		iso, err := ByAlphabeticCode(tt.AlphabeticCode)
 		equal(t, tt.err, err)
 		equal(t, iso, tt.expectISO)
 	}
@@ -73,33 +91,38 @@ func TestByAlphabeticCode(t *testing.T) {
 
 func TestByNumericCode(t *testing.T) {
 	var tests = []struct {
-		numericCode string
-		expectISO   *currency.ISO
+		numericCode uint
+		expectISO   *ISO
 		err         error
 	}{
 		{
-			numericCode: "978",
-			expectISO:   expectEUR,
-			err:         nil,
+			numericCode: 8,
+			expectISO:   expectALL,
 		},
 		{
-			numericCode: "984",
-			expectISO:   expectBOV,
-			err:         nil,
+			numericCode: 48,
+			expectISO:   expectBHD,
 		},
 		{
-			numericCode: "840",
-			expectISO:   expectUSD,
-			err:         nil,
+			numericCode: 990,
+			expectISO:   expectCLF,
 		},
 		{
-			numericCode: "111",
+			numericCode: 704,
+			expectISO:   expectVND,
+		},
+		{
+			numericCode: 959,
+			expectISO:   expectXAU,
+		},
+		{
+			numericCode: 111,
 			expectISO:   nil,
-			err:         fmt.Errorf("%s: %s", currency.ErrNumCode, "111"),
+			err:         fmt.Errorf("%s: %s", ErrNumCode, "111"),
 		},
 	}
 	for _, tt := range tests {
-		iso, err := currency.ByNumericCode(tt.numericCode)
+		iso, err := ByNumericCode(tt.numericCode)
 		equal(t, tt.err, err)
 		equal(t, iso, tt.expectISO)
 	}

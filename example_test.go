@@ -12,7 +12,7 @@ func ExampleByAlphabeticCode() {
 }
 
 func ExampleByNumericCode() {
-	ccy, err := currency.ByNumericCode("392")
+	ccy, err := currency.ByNumericCode(392)
 	fmt.Println(ccy, err)
 	// Output: &{JPY 392 0 Yen [JAPAN]} <nil>
 }
