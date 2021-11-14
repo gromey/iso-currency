@@ -10,35 +10,35 @@ var (
 	expectALL = &ISO{
 		AlphabeticCode: "ALL",
 		NumericCode:    numericCode{Value: 8},
-		MinorUnits:     minorUnits{Value: 2, Valid: true},
+		MinorUnits:     minorUnits{Value: 2, Applicable: true},
 		Name:           "Lek",
 		CountryNames:   []string{"ALBANIA"},
 	}
 	expectBHD = &ISO{
 		AlphabeticCode: "BHD",
 		NumericCode:    numericCode{Value: 48},
-		MinorUnits:     minorUnits{Value: 3, Valid: true},
+		MinorUnits:     minorUnits{Value: 3, Applicable: true},
 		Name:           "Bahraini Dinar",
 		CountryNames:   []string{"BAHRAIN"},
 	}
 	expectCLF = &ISO{
 		AlphabeticCode: "CLF",
 		NumericCode:    numericCode{Value: 990},
-		MinorUnits:     minorUnits{Value: 4, Valid: true},
+		MinorUnits:     minorUnits{Value: 4, Applicable: true},
 		Name:           "Unidad de Fomento",
 		CountryNames:   []string{"CHILE"},
 	}
 	expectVND = &ISO{
 		AlphabeticCode: "VND",
 		NumericCode:    numericCode{Value: 704},
-		MinorUnits:     minorUnits{Value: 0, Valid: true},
+		MinorUnits:     minorUnits{Value: 0, Applicable: true},
 		Name:           "Dong",
 		CountryNames:   []string{"VIET NAM"},
 	}
 	expectXAU = &ISO{
 		AlphabeticCode: "XAU",
 		NumericCode:    numericCode{Value: 959},
-		MinorUnits:     minorUnits{Value: 0, Valid: false},
+		MinorUnits:     minorUnits{Value: 0, Applicable: false},
 		Name:           "Gold",
 		CountryNames:   []string{"ZZ08_Gold"},
 	}

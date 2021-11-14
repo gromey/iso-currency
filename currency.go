@@ -8,6 +8,8 @@ import (
 
 //go:generate go run ./cmd
 
+const NotApplicable string = "N.A."
+
 type numericCode struct {
 	Value uint
 }
@@ -25,13 +27,13 @@ func (n numericCode) String() string {
 }
 
 type minorUnits struct {
-	Value uint
-	Valid bool
+	Value      uint
+	Applicable bool
 }
 
 func (m minorUnits) String() string {
-	if !m.Valid {
-		return "N.A."
+	if !m.Applicable {
+		return NotApplicable
 	}
 	return strconv.Itoa(int(m.Value))
 }

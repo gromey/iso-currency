@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/gromey/iso-currency"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -27,7 +28,7 @@ type currencyRow struct {
 	NumericCode    uint   `xml:"CcyNbr"`
 	MinorUnitsS    string `xml:"CcyMnrUnts"`
 	MinorUnitsI    uint   `xml:"-"`
-	Valid          bool   `xml:"-"`
+	Applicable     bool   `xml:"-"`
 	Name           string `xml:"CcyNm"`
 	CountryName    string `xml:"CtryNm"`
 }
@@ -56,7 +57,7 @@ type isoResult struct {
 	alphabeticCode string
 	numericCode    uint
 	minorUnits     uint
-	valid          bool
+	applicable     bool
 	name           string
 	countryNames   []string
 }
@@ -108,16 +109,16 @@ func (iso *iso4217) makeFiles() error {
 			countryNames:   []string{strings.TrimSpace(ccyRow.CountryName)},
 		}
 
-		if strings.TrimSpace(ccyRow.MinorUnitsS) == "N.A." {
-			isoResultRow.minorUnits = 0
-			isoResultRow.valid = false
-		} else {
+		if strings.TrimSpace(ccyRow.MinorUnitsS) != currency.NotApplicable {
 			m, err := strconv.Atoi(ccyRow.MinorUnitsS)
 			if err != nil {
 				return err
 			}
 			isoResultRow.minorUnits = uint(m)
-			isoResultRow.valid = true
+			isoResultRow.applicable = true
+		} else {
+			isoResultRow.minorUnits = 0
+			isoResultRow.applicable = false
 		}
 
 		mapISO[ccyRow.AlphabeticCode] = isoResultRow
@@ -132,7 +133,7 @@ func (iso *iso4217) makeFiles() error {
 			AlphabeticCode: v.alphabeticCode,
 			NumericCode:    v.numericCode,
 			MinorUnitsI:    v.minorUnits,
-			Valid:          v.valid,
+			Applicable:     v.applicable,
 			Name:           v.name,
 			CountryName:    fmt.Sprintf("%#v", v.countryNames),
 		}
