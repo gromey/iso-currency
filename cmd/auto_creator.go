@@ -8,12 +8,13 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"text/template"
 )
 
 const (
-	url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/amendments/lists/list_one.xml"
+	url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list_one.xml"
 
 	mapsTemplate   = "template/maps.tmpl"
 	readmeTemplate = "template/README.tmpl"
@@ -24,8 +25,10 @@ const (
 
 type currencyRow struct {
 	AlphabeticCode string `xml:"Ccy"`
-	NumericCode    string `xml:"CcyNbr"`
-	MinorUnits     string `xml:"CcyMnrUnts"`
+	NumericCode    uint   `xml:"CcyNbr"`
+	MinorUnitsS    string `xml:"CcyMnrUnts"`
+	MinorUnitsI    uint   `xml:"-"`
+	Applicable     bool   `xml:"-"`
 	Name           string `xml:"CcyNm"`
 	CountryName    string `xml:"CtryNm"`
 }
@@ -40,7 +43,7 @@ type iso4217 struct {
 }
 
 type numeric struct {
-	NumericCode    string
+	NumericCode    uint
 	AlphabeticCode string
 }
 
@@ -48,6 +51,15 @@ type data struct {
 	Alphabetic []currencyRow
 	Numeric    []numeric
 	Published  string
+}
+
+type isoResult struct {
+	alphabeticCode string
+	numericCode    uint
+	minorUnits     uint
+	applicable     bool
+	name           string
+	countryNames   []string
 }
 
 func run() error {
@@ -76,7 +88,7 @@ func (iso *iso4217) get() error {
 }
 
 func (iso *iso4217) makeFiles() error {
-	mapISO := make(map[string]currency.ISO, len(iso.CurrencyTable.CurrencyRows))
+	mapISO := make(map[string]isoResult, len(iso.CurrencyTable.CurrencyRows))
 
 	for _, ccyRow := range iso.CurrencyTable.CurrencyRows {
 		if strings.TrimSpace(ccyRow.AlphabeticCode) == "" {
@@ -85,18 +97,31 @@ func (iso *iso4217) makeFiles() error {
 
 		v, ok := mapISO[strings.TrimSpace(strings.TrimSpace(ccyRow.AlphabeticCode))]
 		if ok {
-			v.CountryNames = append(v.CountryNames, strings.TrimSpace(ccyRow.CountryName))
+			v.countryNames = append(v.countryNames, strings.TrimSpace(ccyRow.CountryName))
 			mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)] = v
 			continue
 		}
 
-		mapISO[ccyRow.AlphabeticCode] = currency.ISO{
-			AlphabeticCode: strings.TrimSpace(ccyRow.AlphabeticCode),
-			NumericCode:    strings.TrimSpace(ccyRow.NumericCode),
-			MinorUnits:     strings.TrimSpace(ccyRow.MinorUnits),
-			Name:           strings.TrimSpace(ccyRow.Name),
-			CountryNames:   []string{strings.TrimSpace(ccyRow.CountryName)},
+		isoResultRow := isoResult{
+			alphabeticCode: strings.TrimSpace(ccyRow.AlphabeticCode),
+			numericCode:    ccyRow.NumericCode,
+			name:           strings.TrimSpace(ccyRow.Name),
+			countryNames:   []string{strings.TrimSpace(ccyRow.CountryName)},
 		}
+
+		if strings.TrimSpace(ccyRow.MinorUnitsS) != currency.NotApplicable {
+			m, err := strconv.Atoi(ccyRow.MinorUnitsS)
+			if err != nil {
+				return err
+			}
+			isoResultRow.minorUnits = uint(m)
+			isoResultRow.applicable = true
+		} else {
+			isoResultRow.minorUnits = 0
+			isoResultRow.applicable = false
+		}
+
+		mapISO[ccyRow.AlphabeticCode] = isoResultRow
 	}
 
 	alphabeticSlice := make([]currencyRow, len(mapISO))
@@ -105,15 +130,16 @@ func (iso *iso4217) makeFiles() error {
 	i := 0
 	for _, v := range mapISO {
 		alphabeticSlice[i] = currencyRow{
-			AlphabeticCode: v.AlphabeticCode,
-			NumericCode:    v.NumericCode,
-			MinorUnits:     v.MinorUnits,
-			Name:           v.Name,
-			CountryName:    fmt.Sprintf("%#v", v.CountryNames),
+			AlphabeticCode: v.alphabeticCode,
+			NumericCode:    v.numericCode,
+			MinorUnitsI:    v.minorUnits,
+			Applicable:     v.applicable,
+			Name:           v.name,
+			CountryName:    fmt.Sprintf("%#v", v.countryNames),
 		}
 		numericSlice[i] = numeric{
-			AlphabeticCode: v.AlphabeticCode,
-			NumericCode:    v.NumericCode,
+			AlphabeticCode: v.alphabeticCode,
+			NumericCode:    v.numericCode,
 		}
 		i++
 	}

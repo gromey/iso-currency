@@ -2,10 +2,10 @@ package currency
 
 var currencyByAlphabeticCode = map[string]ISO{
 {{- range .Alphabetic}}
-	"{{.AlphabeticCode}}": {AlphabeticCode: "{{.AlphabeticCode}}", NumericCode: "{{.NumericCode}}", MinorUnits: "{{.MinorUnits}}", Name: "{{.Name}}", CountryNames: {{.CountryName}}},{{end}}
+	"{{.AlphabeticCode}}": {AlphabeticCode: "{{.AlphabeticCode}}", NumericCode: numericCode{Value: {{.NumericCode}}}, MinorUnits: minorUnits{Value: {{.MinorUnitsI}}, Applicable: {{.Applicable}}}, Name: "{{.Name}}", CountryNames: {{.CountryName}}},{{end}}
 }
 
-var alphabeticCodeByNumericCode = map[string]string{
+var alphabeticCodeByNumericCode = map[uint]string{
 {{- range .Numeric}}
-	"{{.NumericCode}}": "{{.AlphabeticCode}}",{{end}}
+	{{.NumericCode}}: "{{.AlphabeticCode}}",{{end}}
 }
