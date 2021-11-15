@@ -55,11 +55,3 @@ func main() {
 	// ccy.MinorUnits.String(): N.A.
 }
 ```
-
-## Updating
-
-If the information on currencies has been updated, you can update the library files yourself by executing:
-
-```console
-$ go generate
-```
