@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-//go:generate go run ./cmd
+//go:generate go run ./internal/cmd
 
 const NotApplicable string = "N.A."
 
