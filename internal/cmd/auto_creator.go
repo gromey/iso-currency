@@ -16,8 +16,8 @@ import (
 const (
 	url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list_one.xml"
 
-	mapsTemplate   = "template/maps.tmpl"
-	readmeTemplate = "template/README.tmpl"
+	mapsTemplate   = "internal/template/maps.tmpl"
+	readmeTemplate = "internal/template/README.tmpl"
 
 	mapsFileName   = "maps.go"
 	readmeFileName = "README.md"
