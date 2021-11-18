@@ -38,8 +38,8 @@ func (m minorUnits) String() string {
 	return strconv.Itoa(int(m.Value))
 }
 
-// ISO represents one currency in ISO 4217 format
-type ISO struct {
+// iso represents one currency in ISO 4217 format
+type iso struct {
 	// The alphabetic code is based on another ISO standard, ISO 3166, which lists the codes for country names.
 	// The first two letters of the ISO 4217 three-letter code are the same as the code for the country name.
 	// Where possible, the third letter corresponds to the first letter of the currency name.
@@ -56,8 +56,8 @@ type ISO struct {
 	CountryNames []string
 }
 
-// ByAlphabeticCode returns ISO currency by alphabetic code or 'unknown' for invalid code.
-func ByAlphabeticCode(code string) (*ISO, error) {
+// ByAlphabeticCode returns iso currency by alphabetic code or 'unknown' for invalid code.
+func ByAlphabeticCode(code string) (*iso, error) {
 	code = strings.ToUpper(code)
 	iso, ok := currencyByAlphabeticCode[code]
 	if ok {
@@ -66,8 +66,8 @@ func ByAlphabeticCode(code string) (*ISO, error) {
 	return nil, fmt.Errorf("%s: %s", ErrAlphaCode, code)
 }
 
-// ByNumericCode returns ISO currency by numeric code or 'unknown' for invalid code.
-func ByNumericCode(code uint) (*ISO, error) {
+// ByNumericCode returns iso currency by numeric code or 'unknown' for invalid code.
+func ByNumericCode(code uint) (*iso, error) {
 	alphabeticCode, ok := alphabeticCodeByNumericCode[code]
 	if ok {
 		return ByAlphabeticCode(alphabeticCode)

@@ -1,6 +1,6 @@
 package currency
 
-var currencyByAlphabeticCode = map[string]ISO{
+var currencyByAlphabeticCode = map[string]iso{
 	"AED": {AlphabeticCode: "AED", NumericCode: numericCode{Value: 784}, MinorUnits: minorUnits{Value: 2, Applicable: true}, Name: "UAE Dirham", CountryNames: []string{"UNITED ARAB EMIRATES (THE)"}},
 	"AFN": {AlphabeticCode: "AFN", NumericCode: numericCode{Value: 971}, MinorUnits: minorUnits{Value: 2, Applicable: true}, Name: "Afghani", CountryNames: []string{"AFGHANISTAN"}},
 	"ALL": {AlphabeticCode: "ALL", NumericCode: numericCode{Value: 8}, MinorUnits: minorUnits{Value: 2, Applicable: true}, Name: "Lek", CountryNames: []string{"ALBANIA"}},
