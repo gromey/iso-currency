@@ -7,38 +7,38 @@ import (
 )
 
 var (
-	expectALL = &ISO{
+	expectALL = &iso{
 		AlphabeticCode: "ALL",
 		NumericCode:    numericCode{Value: 8},
-		MinorUnits:     minorUnits{Value: 2, Applicable: true},
+		MinorUnits:     minorUnits{Value: 2, applicable: true},
 		Name:           "Lek",
 		CountryNames:   []string{"ALBANIA"},
 	}
-	expectBHD = &ISO{
+	expectBHD = &iso{
 		AlphabeticCode: "BHD",
 		NumericCode:    numericCode{Value: 48},
-		MinorUnits:     minorUnits{Value: 3, Applicable: true},
+		MinorUnits:     minorUnits{Value: 3, applicable: true},
 		Name:           "Bahraini Dinar",
 		CountryNames:   []string{"BAHRAIN"},
 	}
-	expectCLF = &ISO{
+	expectCLF = &iso{
 		AlphabeticCode: "CLF",
 		NumericCode:    numericCode{Value: 990},
-		MinorUnits:     minorUnits{Value: 4, Applicable: true},
+		MinorUnits:     minorUnits{Value: 4, applicable: true},
 		Name:           "Unidad de Fomento",
 		CountryNames:   []string{"CHILE"},
 	}
-	expectVND = &ISO{
+	expectVND = &iso{
 		AlphabeticCode: "VND",
 		NumericCode:    numericCode{Value: 704},
-		MinorUnits:     minorUnits{Value: 0, Applicable: true},
+		MinorUnits:     minorUnits{Value: 0, applicable: true},
 		Name:           "Dong",
 		CountryNames:   []string{"VIET NAM"},
 	}
-	expectXAU = &ISO{
+	expectXAU = &iso{
 		AlphabeticCode: "XAU",
 		NumericCode:    numericCode{Value: 959},
-		MinorUnits:     minorUnits{Value: 0, Applicable: false},
+		MinorUnits:     minorUnits{Value: 0, applicable: false},
 		Name:           "Gold",
 		CountryNames:   []string{"ZZ08_Gold"},
 	}
@@ -53,7 +53,7 @@ func equal(t *testing.T, exp, got interface{}) {
 func TestByAlphabeticCode(t *testing.T) {
 	var tests = []struct {
 		AlphabeticCode string
-		expectISO      *ISO
+		expectISO      *iso
 		err            error
 	}{
 		{
@@ -92,7 +92,7 @@ func TestByAlphabeticCode(t *testing.T) {
 func TestByNumericCode(t *testing.T) {
 	var tests = []struct {
 		numericCode uint
-		expectISO   *ISO
+		expectISO   *iso
 		err         error
 	}{
 		{
