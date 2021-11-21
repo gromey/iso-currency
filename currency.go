@@ -17,22 +17,18 @@ type numericCode struct {
 func (n numericCode) String() string {
 	s := strconv.Itoa(int(n.Value))
 	if len(s) != 3 {
-		zeros := ""
-		for i := 0; i < 3-len(s); i++ {
-			zeros = zeros + "0"
-		}
-		s = zeros + s
+		s = strings.Repeat("0", 3-len(s)) + s
 	}
 	return s
 }
 
 type minorUnits struct {
 	Value      uint
-	Applicable bool
+	applicable bool
 }
 
 func (m minorUnits) String() string {
-	if !m.Applicable {
+	if !m.applicable {
 		return NotApplicable
 	}
 	return strconv.Itoa(int(m.Value))

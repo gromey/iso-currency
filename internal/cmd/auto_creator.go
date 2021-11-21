@@ -23,14 +23,17 @@ const (
 	readmeFileName = "README.md"
 )
 
+type minorUnits struct {
+	Value      uint
+	Applicable bool
+}
+
 type currencyRow struct {
-	AlphabeticCode string `xml:"Ccy"`
-	NumericCode    uint   `xml:"CcyNbr"`
-	MinorUnitsS    string `xml:"CcyMnrUnts"`
-	MinorUnitsI    uint   `xml:"-"`
-	Applicable     bool   `xml:"-"`
-	Name           string `xml:"CcyNm"`
-	CountryName    string `xml:"CtryNm"`
+	AlphabeticCode string     `xml:"Ccy"`
+	NumericCode    uint       `xml:"CcyNbr"`
+	MinorUnits     minorUnits `xml:"CcyMnrUnts"`
+	Name           string     `xml:"CcyNm"`
+	CountryName    string     `xml:"CtryNm"`
 }
 
 type currencyTable struct {
@@ -56,10 +59,28 @@ type data struct {
 type isoResult struct {
 	alphabeticCode string
 	numericCode    uint
-	minorUnits     uint
-	applicable     bool
+	minorUnits     minorUnits
 	name           string
 	countryNames   []string
+}
+
+func (m *minorUnits) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var v string
+	if err := d.DecodeElement(&v, &start); err != nil {
+		return err
+	}
+	if strings.TrimSpace(v) != currency.NotApplicable {
+		n, err := strconv.Atoi(v)
+		if err != nil {
+			return err
+		}
+		m.Value = uint(n)
+		m.Applicable = true
+	} else {
+		m.Value = 0
+		m.Applicable = false
+	}
+	return nil
 }
 
 func run() error {
@@ -105,20 +126,9 @@ func (iso *iso4217) makeFiles() error {
 		isoResultRow := isoResult{
 			alphabeticCode: strings.TrimSpace(ccyRow.AlphabeticCode),
 			numericCode:    ccyRow.NumericCode,
+			minorUnits:     ccyRow.MinorUnits,
 			name:           strings.TrimSpace(ccyRow.Name),
 			countryNames:   []string{strings.TrimSpace(ccyRow.CountryName)},
-		}
-
-		if strings.TrimSpace(ccyRow.MinorUnitsS) != currency.NotApplicable {
-			m, err := strconv.Atoi(ccyRow.MinorUnitsS)
-			if err != nil {
-				return err
-			}
-			isoResultRow.minorUnits = uint(m)
-			isoResultRow.applicable = true
-		} else {
-			isoResultRow.minorUnits = 0
-			isoResultRow.applicable = false
 		}
 
 		mapISO[ccyRow.AlphabeticCode] = isoResultRow
@@ -132,8 +142,7 @@ func (iso *iso4217) makeFiles() error {
 		alphabeticSlice[i] = currencyRow{
 			AlphabeticCode: v.alphabeticCode,
 			NumericCode:    v.numericCode,
-			MinorUnitsI:    v.minorUnits,
-			Applicable:     v.applicable,
+			MinorUnits:     v.minorUnits,
 			Name:           v.name,
 			CountryName:    fmt.Sprintf("%#v", v.countryNames),
 		}
