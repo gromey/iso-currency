@@ -16,9 +16,11 @@ import (
 const (
 	url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list_one.xml"
 
+	constTemplate  = "internal/template/constants.tmpl"
 	mapsTemplate   = "internal/template/maps.tmpl"
 	readmeTemplate = "internal/template/README.tmpl"
 
+	constFileName  = "constants.go"
 	mapsFileName   = "maps.go"
 	readmeFileName = "README.md"
 )
@@ -165,6 +167,10 @@ func (iso *iso4217) makeFiles() error {
 		Alphabetic: alphabeticSlice,
 		Numeric:    numericSlice,
 		Published:  iso.Published,
+	}
+
+	if err := createFileByTemplate(constTemplate, constFileName, result); err != nil {
+		return err
 	}
 
 	if err := createFileByTemplate(mapsTemplate, mapsFileName, result); err != nil {
