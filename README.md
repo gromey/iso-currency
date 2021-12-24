@@ -32,15 +32,20 @@ import (
 )
 
 func main() {
-	ccy, err := currency.ByAlphabeticCode("All")
+	jpy := currency.JPY.Get()
+
+	fmt.Printf("jpy: %v", jpy)
+	// jpy: &{JPY 392 0 Yen [JAPAN]};
+
+	ccy, err := currency.ByAlphabeticCode("ALL")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ccy: %v;\nccy.NumericCode.Value: %d;\nccy.NumericCode.String(): %s\n",
-		ccy, ccy.NumericCode.Value, ccy.NumericCode.String())
+	fmt.Printf("ccy: %v;\nccy.NumericCode.Value(): %d;\nccy.NumericCode.String(): %s\n",
+		ccy, ccy.NumericCode.Value(), ccy.NumericCode.String())
 	// ccy: &{ALL 008 2 Lek [ALBANIA]};
-	// ccy.NumericCode.Value: 8;
+	// ccy.NumericCode.Value(): 8;
 	// ccy.NumericCode.String(): 008
 
 	ccy, err = currency.ByNumericCode(959)
@@ -48,10 +53,10 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("ccy: %v;\nccy.MinorUnits.Value: %d;\nccy.MinorUnits.String(): %s\n",
-		ccy, ccy.MinorUnits.Value, ccy.MinorUnits.String())
+	fmt.Printf("ccy: %v;\nccy.MinorUnits.Value(): %d;\nccy.MinorUnits.String(): %s\n",
+		ccy, ccy.MinorUnits.Value(), ccy.MinorUnits.String())
 	// ccy: &{XAU 959 N.A. Gold [ZZ08_Gold]};
-	// ccy.MinorUnits.Value: 0;
+	// ccy.MinorUnits.Value(): 0;
 	// ccy.MinorUnits.String(): N.A.
 }
 ```
