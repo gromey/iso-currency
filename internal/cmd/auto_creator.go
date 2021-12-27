@@ -32,7 +32,7 @@ type minorUnits struct {
 
 type currencyRow struct {
 	AlphabeticCode string     `xml:"Ccy"`
-	NumericCode    uint       `xml:"CcyNbr"`
+	NumericCode    string     `xml:"CcyNbr"`
 	MinorUnits     minorUnits `xml:"CcyMnrUnts"`
 	Name           string     `xml:"CcyNm"`
 	CountryName    string     `xml:"CtryNm"`
@@ -48,7 +48,7 @@ type iso4217 struct {
 }
 
 type numeric struct {
-	NumericCode    uint
+	NumericCode    string
 	AlphabeticCode string
 }
 
@@ -60,7 +60,7 @@ type data struct {
 
 type isoResult struct {
 	alphabeticCode string
-	numericCode    uint
+	numericCode    string
 	minorUnits     minorUnits
 	name           string
 	countryNames   []string
@@ -118,7 +118,7 @@ func (iso *iso4217) makeFiles() error {
 			continue
 		}
 
-		v, ok := mapISO[strings.TrimSpace(strings.TrimSpace(ccyRow.AlphabeticCode))]
+		v, ok := mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)]
 		if ok {
 			v.countryNames = append(v.countryNames, strings.TrimSpace(ccyRow.CountryName))
 			mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)] = v

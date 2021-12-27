@@ -11,16 +11,16 @@ func ExampleByAlphabeticCode() {
 		panic(err)
 	}
 
-	fmt.Println(ccy)
-	// Output: &{JPY 392 0 Yen [JAPAN]}
+	fmt.Printf("%+v", ccy)
+	// Output: &{AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
 }
 
 func ExampleByNumericCode() {
-	ccy, err := currency.ByNumericCode(392)
+	ccy, err := currency.ByNumericCode("392")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(ccy)
-	// Output: &{JPY 392 0 Yen [JAPAN]}
+	fmt.Printf("%+v", ccy)
+	// Output: &{AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
 }

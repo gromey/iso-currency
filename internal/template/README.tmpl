@@ -34,29 +34,57 @@ import (
 func main() {
 	jpy := currency.JPY.Get()
 
-	fmt.Printf("jpy: %v", jpy)
-	// jpy: &{JPY 392 0 Yen [JAPAN]};
+	fmt.Printf("jpy: %+v\n", jpy)
+	// jpy: &{AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
+	fmt.Printf("jpy.MinorUnits: Value() = %v, String() = %v\n", jpy.MinorUnits.Value(), jpy.MinorUnits.String())
+	// jpy.MinorUnits: Value() = 0; String() = 0
 
-	ccy, err := currency.ByAlphabeticCode("ALL")
+	ccy, err := currency.ByAlphabeticCode("XAU")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ccy: %v;\nccy.NumericCode.Value(): %d;\nccy.NumericCode.String(): %s\n",
-		ccy, ccy.NumericCode.Value(), ccy.NumericCode.String())
-	// ccy: &{ALL 008 2 Lek [ALBANIA]};
-	// ccy.NumericCode.Value(): 8;
-	// ccy.NumericCode.String(): 008
+	fmt.Printf("ccy: %+v\n", ccy)
+	// ccy: &{AlphabeticCode:XAU NumericCode:959 MinorUnits:N.A. Name:Gold CountryNames:[ZZ08_Gold]}
+	fmt.Printf("ccy.MinorUnits: Value() = %v, String() = %v\n", ccy.MinorUnits.Value(), ccy.MinorUnits.String())
+	// ccy.MinorUnits: Value() = 0; String() = N.A.
 
-	ccy, err = currency.ByNumericCode(959)
+	ccy, err = currency.ByNumericCode("008")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("ccy: %v;\nccy.MinorUnits.Value(): %d;\nccy.MinorUnits.String(): %s\n",
-		ccy, ccy.MinorUnits.Value(), ccy.MinorUnits.String())
-	// ccy: &{XAU 959 N.A. Gold [ZZ08_Gold]};
-	// ccy.MinorUnits.Value(): 0;
-	// ccy.MinorUnits.String(): N.A.
+	fmt.Printf("ccy: %+v\n", ccy)
+	// ccy:  &{AlphabeticCode:ALL NumericCode:008 MinorUnits:2 Name:Lek CountryNames:[ALBANIA]}
+	fmt.Printf("ccy.MinorUnits: Value() = %v, String() = %v\n", ccy.MinorUnits.Value(), ccy.MinorUnits.String())
+	// ccy.MinorUnits: Value() = 2; String() = 2
 }
+```
+
+If you need, you can create your own currency like this:
+
+```go
+	ccy := currency.Currency{
+		AlphabeticCode: "YAC",
+		NumericCode:    "123",
+		MinorUnits:     currency.NewMinorUnits(2),
+		Name:           "YouCurrencyName",
+		CountryNames:   []string{"YouCountryName"},
+	}
+
+	fmt.Printf("ccy: %+v\n", ccy)
+	// ccy: {AlphabeticCode:YAC NumericCode:123 MinorUnits:2 Name:YouCurrencyName CountryNames:[YouCountryName]}
+
+	// If you do not specify MinorUnits, then when you create the currency, a default value will be assigned,
+	// which will give "N.A." when displayed, like "XAU".
+
+	ccy = currency.Currency{
+		AlphabeticCode: "YAC",
+		NumericCode:    "123",
+		Name:           "YouCurrencyName",
+		CountryNames:   []string{"YouCountryName"},
+	}
+
+	fmt.Printf("ccy: %+v\n", ccy)
+	// ccy: {AlphabeticCode:YAC NumericCode:123 MinorUnits:N.A. Name:YouCurrencyName CountryNames:[YouCountryName]}
 ```

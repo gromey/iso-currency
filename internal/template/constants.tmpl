@@ -1,7 +1,7 @@
 package currency
 
 const (
-	NotApplicable string = "N.A."
+	NotApplicable string = "N.A." // No digits after the decimal separator.
 {{range .Alphabetic}}
 	{{.AlphabeticCode}} alphabeticCode = "{{.AlphabeticCode}}" // {{.Name}}{{end}}
 )
