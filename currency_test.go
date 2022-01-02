@@ -7,38 +7,37 @@ import (
 )
 
 var (
-	expectALL = &currency{
+	expectALL = &Currency{
 		AlphabeticCode: "ALL",
-		NumericCode:    numericCode(8),
-		MinorUnits:     minorUnits{value: 2, applicable: true},
+		NumericCode:    "008",
+		MinorUnits:     NewMinorUnits(2),
 		Name:           "Lek",
 		CountryNames:   []string{"ALBANIA"},
 	}
-	expectBHD = &currency{
+	expectBHD = &Currency{
 		AlphabeticCode: "BHD",
-		NumericCode:    numericCode(48),
-		MinorUnits:     minorUnits{value: 3, applicable: true},
+		NumericCode:    "048",
+		MinorUnits:     NewMinorUnits(3),
 		Name:           "Bahraini Dinar",
 		CountryNames:   []string{"BAHRAIN"},
 	}
-	expectCLF = &currency{
+	expectCLF = &Currency{
 		AlphabeticCode: "CLF",
-		NumericCode:    numericCode(990),
-		MinorUnits:     minorUnits{value: 4, applicable: true},
+		NumericCode:    "990",
+		MinorUnits:     NewMinorUnits(4),
 		Name:           "Unidad de Fomento",
 		CountryNames:   []string{"CHILE"},
 	}
-	expectVND = &currency{
+	expectVND = &Currency{
 		AlphabeticCode: "VND",
-		NumericCode:    numericCode(704),
-		MinorUnits:     minorUnits{value: 0, applicable: true},
+		NumericCode:    "704",
+		MinorUnits:     NewMinorUnits(0),
 		Name:           "Dong",
 		CountryNames:   []string{"VIET NAM"},
 	}
-	expectXAU = &currency{
+	expectXAU = &Currency{
 		AlphabeticCode: "XAU",
-		NumericCode:    numericCode(959),
-		MinorUnits:     minorUnits{value: 0, applicable: false},
+		NumericCode:    "959",
 		Name:           "Gold",
 		CountryNames:   []string{"ZZ08_Gold"},
 	}
@@ -50,80 +49,304 @@ func equal(t *testing.T, exp, got interface{}) {
 	}
 }
 
-func TestByAlphabeticCode(t *testing.T) {
+func TestAlphabeticCode_Get(t *testing.T) {
 	var tests = []struct {
-		AlphabeticCode string
-		expectISO      *currency
-		err            error
+		alphabeticCode alphabeticCode
+		expectCcy      *Currency
 	}{
 		{
-			AlphabeticCode: "ALL",
-			expectISO:      expectALL,
+			alphabeticCode: ALL,
+			expectCcy:      expectALL,
 		},
 		{
-			AlphabeticCode: "bhd",
-			expectISO:      expectBHD,
+			alphabeticCode: BHD,
+			expectCcy:      expectBHD,
 		},
 		{
-			AlphabeticCode: "Clf",
-			expectISO:      expectCLF,
+			alphabeticCode: CLF,
+			expectCcy:      expectCLF,
 		},
 		{
-			AlphabeticCode: "vNd",
-			expectISO:      expectVND,
+			alphabeticCode: VND,
+			expectCcy:      expectVND,
 		},
 		{
-			AlphabeticCode: "xaU",
-			expectISO:      expectXAU,
-		},
-		{
-			AlphabeticCode: "ERU",
-			expectISO:      nil,
-			err:            fmt.Errorf("%s: %s", ErrAlphaCode, "ERU"),
+			alphabeticCode: XAU,
+			expectCcy:      expectXAU,
 		},
 	}
 	for _, tt := range tests {
-		iso, err := ByAlphabeticCode(tt.AlphabeticCode)
+		iso := tt.alphabeticCode.Get()
+		equal(t, iso, tt.expectCcy)
+	}
+}
+
+func TestAlphabeticCode_String(t *testing.T) {
+	var tests = []struct {
+		alphabeticCode alphabeticCode
+		expectString   string
+	}{
+		{
+			alphabeticCode: ALL,
+			expectString:   "ALL",
+		},
+		{
+			alphabeticCode: BHD,
+			expectString:   "BHD",
+		},
+		{
+			alphabeticCode: CLF,
+			expectString:   "CLF",
+		},
+		{
+			alphabeticCode: VND,
+			expectString:   "VND",
+		},
+		{
+			alphabeticCode: XAU,
+			expectString:   "XAU",
+		},
+	}
+	for _, tt := range tests {
+		s := tt.alphabeticCode.String()
+		equal(t, s, tt.expectString)
+	}
+}
+
+func TestNewMinorUnits(t *testing.T) {
+	var tests = []struct {
+		minorUnits   MinorUnits
+		expectString string
+		expectValue  uint8
+	}{
+		{
+			minorUnits:   NewMinorUnits(2),
+			expectString: "2",
+			expectValue:  2,
+		},
+		{
+			minorUnits:   NewMinorUnits(3),
+			expectString: "3",
+			expectValue:  3,
+		},
+		{
+			minorUnits:   NewMinorUnits(4),
+			expectString: "4",
+			expectValue:  4,
+		},
+		{
+			minorUnits:   NewMinorUnits(0),
+			expectString: "0",
+			expectValue:  0,
+		},
+		{
+			minorUnits:   MinorUnits{},
+			expectString: NotApplicable,
+
+			expectValue: 0,
+		},
+	}
+	for _, tt := range tests {
+		equal(t, tt.minorUnits.String(), tt.expectString)
+		equal(t, tt.minorUnits.Value(), tt.expectValue)
+
+	}
+}
+
+func TestMinorUnits_String(t *testing.T) {
+	var tests = []struct {
+		alphabeticCode alphabeticCode
+		expectString   string
+	}{
+		{
+			alphabeticCode: ALL,
+			expectString:   "2",
+		},
+		{
+			alphabeticCode: BHD,
+			expectString:   "3",
+		},
+		{
+			alphabeticCode: CLF,
+			expectString:   "4",
+		},
+		{
+			alphabeticCode: VND,
+			expectString:   "0",
+		},
+		{
+			alphabeticCode: XAU,
+			expectString:   NotApplicable,
+		},
+	}
+	for _, tt := range tests {
+		s := tt.alphabeticCode.Get().MinorUnits.String()
+		equal(t, s, tt.expectString)
+	}
+}
+
+func TestMinorUnits_Value(t *testing.T) {
+	var tests = []struct {
+		alphabeticCode alphabeticCode
+		expectValue    uint8
+	}{
+		{
+			alphabeticCode: ALL,
+			expectValue:    2,
+		},
+		{
+			alphabeticCode: BHD,
+			expectValue:    3,
+		},
+		{
+			alphabeticCode: CLF,
+			expectValue:    4,
+		},
+		{
+			alphabeticCode: VND,
+			expectValue:    0,
+		},
+		{
+			alphabeticCode: XAU,
+			expectValue:    0,
+		},
+	}
+	for _, tt := range tests {
+		v := tt.alphabeticCode.Get().MinorUnits.Value()
+		equal(t, v, tt.expectValue)
+	}
+}
+
+func TestByAlphabeticCode(t *testing.T) {
+	var tests = []struct {
+		alphabeticCode string
+		expectCcy      *Currency
+		err            error
+	}{
+		{
+			alphabeticCode: "ALL",
+			expectCcy:      expectALL,
+		},
+		{
+			alphabeticCode: "bhd",
+			expectCcy:      expectBHD,
+		},
+		{
+			alphabeticCode: "Clf",
+			expectCcy:      expectCLF,
+		},
+		{
+			alphabeticCode: "vNd",
+			expectCcy:      expectVND,
+		},
+		{
+			alphabeticCode: "xaU",
+			expectCcy:      expectXAU,
+		},
+		{
+			alphabeticCode: "ER0",
+			expectCcy:      nil,
+			err:            fmt.Errorf("%s: %s", InvalidAlphabeticCode, "ER0"),
+		},
+		{
+			alphabeticCode: "ERU",
+			expectCcy:      nil,
+			err:            fmt.Errorf("%s: %s", UnknownAlphabeticCode, "ERU"),
+		},
+	}
+	for _, tt := range tests {
+		iso, err := ByAlphabeticCode(tt.alphabeticCode)
 		equal(t, tt.err, err)
-		equal(t, iso, tt.expectISO)
+		equal(t, iso, tt.expectCcy)
 	}
 }
 
 func TestByNumericCode(t *testing.T) {
 	var tests = []struct {
-		numericCode uint16
-		expectISO   *currency
+		numericCode string
+		expectCcy   *Currency
 		err         error
 	}{
 		{
-			numericCode: 8,
-			expectISO:   expectALL,
+			numericCode: "008",
+			expectCcy:   expectALL,
 		},
 		{
-			numericCode: 48,
-			expectISO:   expectBHD,
+			numericCode: "048",
+			expectCcy:   expectBHD,
 		},
 		{
-			numericCode: 990,
-			expectISO:   expectCLF,
+			numericCode: "990",
+			expectCcy:   expectCLF,
 		},
 		{
-			numericCode: 704,
-			expectISO:   expectVND,
+			numericCode: "704",
+			expectCcy:   expectVND,
 		},
 		{
-			numericCode: 959,
-			expectISO:   expectXAU,
+			numericCode: "959",
+			expectCcy:   expectXAU,
 		},
 		{
-			numericCode: 111,
-			expectISO:   nil,
-			err:         fmt.Errorf("%s: %s", ErrNumCode, "111"),
+			numericCode: "A51",
+			expectCcy:   nil,
+			err:         fmt.Errorf("%s: %s", InvalidNumericCode, "A51"),
+		},
+		{
+			numericCode: "111",
+			expectCcy:   nil,
+			err:         fmt.Errorf("%s: %s", UnknownNumericCode, "111"),
 		},
 	}
 	for _, tt := range tests {
 		iso, err := ByNumericCode(tt.numericCode)
 		equal(t, tt.err, err)
-		equal(t, iso, tt.expectISO)
+		equal(t, iso, tt.expectCcy)
+	}
+}
+
+func TestOnlyLetters(t *testing.T) {
+	var tests = []struct {
+		alphabeticCode string
+		expectBool     bool
+	}{
+		{
+			alphabeticCode: "AAA",
+			expectBool:     true,
+		},
+		{
+			alphabeticCode: "AA1",
+			expectBool:     false,
+		},
+		{
+			alphabeticCode: "AA!",
+			expectBool:     false,
+		},
+	}
+	for _, tt := range tests {
+		equal(t, onlyLetters(tt.alphabeticCode), tt.expectBool)
+	}
+}
+
+func TestOnlyNumbers(t *testing.T) {
+	var tests = []struct {
+		numericCode string
+		expectBool  bool
+	}{
+		{
+			numericCode: "000",
+			expectBool:  true,
+		},
+		{
+			numericCode: "00A",
+			expectBool:  false,
+		},
+		{
+			numericCode: "00!",
+			expectBool:  false,
+		},
+	}
+	for _, tt := range tests {
+		equal(t, onlyNumbers(tt.numericCode), tt.expectBool)
 	}
 }

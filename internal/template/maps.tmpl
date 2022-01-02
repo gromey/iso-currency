@@ -1,11 +1,11 @@
 package currency
 
-var currencyByAlphabeticCode = map[alphabeticCode]currency{
+var currencyByAlphabeticCode = map[alphabeticCode]Currency{
 {{- range .Alphabetic}}
-	{{.AlphabeticCode}}: {AlphabeticCode: "{{.AlphabeticCode}}", NumericCode: {{.NumericCode}}, MinorUnits: minorUnits{value: {{.MinorUnits.Value}}, applicable: {{.MinorUnits.Applicable}}}, Name: "{{.Name}}", CountryNames: {{.CountryName}}},{{end}}
+	{{.AlphabeticCode}}: {AlphabeticCode: "{{.AlphabeticCode}}", NumericCode: "{{.NumericCode}}", MinorUnits: MinorUnits{value: {{.MinorUnits.Value}}, applicable: {{.MinorUnits.Applicable}}}, Name: "{{.Name}}", CountryNames: {{.CountryName}}},{{end}}
 }
 
-var alphabeticCodeByNumericCode = map[uint16]alphabeticCode{
+var alphabeticCodeByNumericCode = map[string]alphabeticCode{
 {{- range .Numeric}}
-	{{.NumericCode}}: {{.AlphabeticCode}},{{end}}
+	"{{.NumericCode}}": {{.AlphabeticCode}},{{end}}
 }
