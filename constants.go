@@ -132,6 +132,7 @@ const (
 	SEK alphabeticCode = "SEK" // Swedish Krona
 	SGD alphabeticCode = "SGD" // Singapore Dollar
 	SHP alphabeticCode = "SHP" // Saint Helena Pound
+	SLE alphabeticCode = "SLE" // Leone
 	SLL alphabeticCode = "SLL" // Leone
 	SOS alphabeticCode = "SOS" // Somali Shilling
 	SRD alphabeticCode = "SRD" // Surinam Dollar
