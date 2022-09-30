@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/gromey/iso-currency"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -11,10 +10,12 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+
+	"github.com/gromey/iso-currency"
 )
 
 const (
-	url = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list_one.xml"
+	rawURL = "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml"
 
 	constTemplate  = "internal/template/constants.tmpl"
 	mapsTemplate   = "internal/template/maps.tmpl"
@@ -96,7 +97,7 @@ func run() error {
 }
 
 func (iso *iso4217) get() error {
-	response, err := http.Get(url)
+	response, err := http.Get(rawURL)
 	if err != nil {
 		return err
 	}
