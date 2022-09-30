@@ -144,7 +144,7 @@ var currencyByAlphabeticCode = map[alphabeticCode]Currency{
 	TMT: {AlphabeticCode: "TMT", NumericCode: "934", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Turkmenistan New Manat", CountryNames: []string{"TURKMENISTAN"}},
 	TND: {AlphabeticCode: "TND", NumericCode: "788", MinorUnits: MinorUnits{value: 3, applicable: true}, Name: "Tunisian Dinar", CountryNames: []string{"TUNISIA"}},
 	TOP: {AlphabeticCode: "TOP", NumericCode: "776", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Pa’anga", CountryNames: []string{"TONGA"}},
-	TRY: {AlphabeticCode: "TRY", NumericCode: "949", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Turkish Lira", CountryNames: []string{"TURKEY"}},
+	TRY: {AlphabeticCode: "TRY", NumericCode: "949", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Turkish Lira", CountryNames: []string{"TÜRKİYE"}},
 	TTD: {AlphabeticCode: "TTD", NumericCode: "780", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Trinidad and Tobago Dollar", CountryNames: []string{"TRINIDAD AND TOBAGO"}},
 	TWD: {AlphabeticCode: "TWD", NumericCode: "901", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "New Taiwan Dollar", CountryNames: []string{"TAIWAN (PROVINCE OF CHINA)"}},
 	TZS: {AlphabeticCode: "TZS", NumericCode: "834", MinorUnits: MinorUnits{value: 2, applicable: true}, Name: "Tanzanian Shilling", CountryNames: []string{"TANZANIA, UNITED REPUBLIC OF"}},
