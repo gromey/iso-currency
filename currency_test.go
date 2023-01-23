@@ -7,35 +7,35 @@ import (
 )
 
 var (
-	expectALL = &Currency{
+	expectALL = Currency{
 		AlphabeticCode: "ALL",
 		NumericCode:    "008",
 		MinorUnits:     NewMinorUnits(2),
 		Name:           "Lek",
 		CountryNames:   []string{"ALBANIA"},
 	}
-	expectBHD = &Currency{
+	expectBHD = Currency{
 		AlphabeticCode: "BHD",
 		NumericCode:    "048",
 		MinorUnits:     NewMinorUnits(3),
 		Name:           "Bahraini Dinar",
 		CountryNames:   []string{"BAHRAIN"},
 	}
-	expectCLF = &Currency{
+	expectCLF = Currency{
 		AlphabeticCode: "CLF",
 		NumericCode:    "990",
 		MinorUnits:     NewMinorUnits(4),
 		Name:           "Unidad de Fomento",
 		CountryNames:   []string{"CHILE"},
 	}
-	expectVND = &Currency{
+	expectVND = Currency{
 		AlphabeticCode: "VND",
 		NumericCode:    "704",
 		MinorUnits:     NewMinorUnits(0),
 		Name:           "Dong",
 		CountryNames:   []string{"VIET NAM"},
 	}
-	expectXAU = &Currency{
+	expectXAU = Currency{
 		AlphabeticCode: "XAU",
 		NumericCode:    "959",
 		Name:           "Gold",
@@ -52,7 +52,7 @@ func equal(t *testing.T, exp, got interface{}) {
 func TestAlphabeticCode_Get(t *testing.T) {
 	var tests = []struct {
 		alphabeticCode alphabeticCode
-		expectCcy      *Currency
+		expectCcy      Currency
 	}{
 		{
 			alphabeticCode: ALL,
@@ -220,7 +220,7 @@ func TestMinorUnits_Value(t *testing.T) {
 func TestByAlphabeticCode(t *testing.T) {
 	var tests = []struct {
 		alphabeticCode string
-		expectCcy      *Currency
+		expectCcy      Currency
 		err            error
 	}{
 		{
@@ -245,12 +245,12 @@ func TestByAlphabeticCode(t *testing.T) {
 		},
 		{
 			alphabeticCode: "ER0",
-			expectCcy:      nil,
+			expectCcy:      Currency{},
 			err:            fmt.Errorf("%s: %s", InvalidAlphabeticCode, "ER0"),
 		},
 		{
 			alphabeticCode: "ERU",
-			expectCcy:      nil,
+			expectCcy:      Currency{},
 			err:            fmt.Errorf("%s: %s", UnknownAlphabeticCode, "ERU"),
 		},
 	}
@@ -264,7 +264,7 @@ func TestByAlphabeticCode(t *testing.T) {
 func TestByNumericCode(t *testing.T) {
 	var tests = []struct {
 		numericCode string
-		expectCcy   *Currency
+		expectCcy   Currency
 		err         error
 	}{
 		{
@@ -289,12 +289,12 @@ func TestByNumericCode(t *testing.T) {
 		},
 		{
 			numericCode: "A51",
-			expectCcy:   nil,
+			expectCcy:   Currency{},
 			err:         fmt.Errorf("%s: %s", InvalidNumericCode, "A51"),
 		},
 		{
 			numericCode: "111",
-			expectCcy:   nil,
+			expectCcy:   Currency{},
 			err:         fmt.Errorf("%s: %s", UnknownNumericCode, "111"),
 		},
 	}

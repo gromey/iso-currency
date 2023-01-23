@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"sort"
@@ -103,8 +103,8 @@ func (iso *iso4217) get() error {
 	}
 	defer response.Body.Close()
 
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
+	var body []byte
+	if body, err = io.ReadAll(response.Body); err != nil {
 		return err
 	}
 
@@ -119,8 +119,7 @@ func (iso *iso4217) makeFiles() error {
 			continue
 		}
 
-		v, ok := mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)]
-		if ok {
+		if v, ok := mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)]; ok {
 			v.countryNames = append(v.countryNames, strings.TrimSpace(ccyRow.CountryName))
 			mapISO[strings.TrimSpace(ccyRow.AlphabeticCode)] = v
 			continue
@@ -187,8 +186,8 @@ func createFileByTemplate(tempPath, filename string, data interface{}) error {
 		return err
 	}
 
-	file, err := os.Create(filename)
-	if err != nil {
+	var file *os.File
+	if file, err = os.Create(filename); err != nil {
 		return err
 	}
 	defer file.Close()

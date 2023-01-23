@@ -13,7 +13,7 @@ func ExampleByAlphabeticCode() {
 	}
 
 	fmt.Printf("%+v", ccy)
-	// Output: &{AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
+	// Output: {AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
 }
 
 func ExampleByNumericCode() {
@@ -23,5 +23,5 @@ func ExampleByNumericCode() {
 	}
 
 	fmt.Printf("%+v", ccy)
-	// Output: &{AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
+	// Output: {AlphabeticCode:JPY NumericCode:392 MinorUnits:0 Name:Yen CountryNames:[JAPAN]}
 }
