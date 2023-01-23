@@ -35,9 +35,8 @@ func (a alphabeticCode) String() string {
 }
 
 // Get returns Currency for the alphabetic currency code.
-func (a alphabeticCode) Get() *Currency {
-	ccy := currencyByAlphabeticCode[a]
-	return &ccy
+func (a alphabeticCode) Get() Currency {
+	return currencyByAlphabeticCode[a]
 }
 
 // MinorUnits represents the number of digits after the decimal separator.
@@ -68,31 +67,27 @@ func (m MinorUnits) Value() uint8 {
 	return m.value
 }
 
-// ByAlphabeticCode returns Currency by alphabetic code
-// or error: 'unknown' for invalid code.
-func ByAlphabeticCode(code string) (*Currency, error) {
+// ByAlphabeticCode returns Currency by alphabetic code or error: 'unknown' for invalid code.
+func ByAlphabeticCode(code string) (Currency, error) {
 	code = strings.ToUpper(code)
 	if len(code) != 3 || !onlyLetters(code) {
-		return nil, fmt.Errorf("%s: %s", InvalidAlphabeticCode, code)
+		return Currency{}, fmt.Errorf("%s: %s", InvalidAlphabeticCode, code)
 	}
-	ccy, ok := currencyByAlphabeticCode[alphabeticCode(code)]
-	if ok {
-		return &ccy, nil
+	if ccy, ok := currencyByAlphabeticCode[alphabeticCode(code)]; ok {
+		return ccy, nil
 	}
-	return nil, fmt.Errorf("%s: %s", UnknownAlphabeticCode, code)
+	return Currency{}, fmt.Errorf("%s: %s", UnknownAlphabeticCode, code)
 }
 
-// ByNumericCode returns Currency by numeric code
-// or error: 'unknown' for invalid code.
-func ByNumericCode(code string) (*Currency, error) {
+// ByNumericCode returns Currency by numeric code or error: 'unknown' for invalid code.
+func ByNumericCode(code string) (Currency, error) {
 	if len(code) != 3 || !onlyNumbers(code) {
-		return nil, fmt.Errorf("%s: %s", InvalidNumericCode, code)
+		return Currency{}, fmt.Errorf("%s: %s", InvalidNumericCode, code)
 	}
-	alphaCode, ok := alphabeticCodeByNumericCode[code]
-	if ok {
+	if alphaCode, ok := alphabeticCodeByNumericCode[code]; ok {
 		return alphaCode.Get(), nil
 	}
-	return nil, fmt.Errorf("%s: %s", UnknownNumericCode, code)
+	return Currency{}, fmt.Errorf("%s: %s", UnknownNumericCode, code)
 }
 
 func onlyLetters(s string) bool {
