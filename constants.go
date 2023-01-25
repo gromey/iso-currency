@@ -64,7 +64,6 @@ const (
 	GYD alphabeticCode = "GYD" // Guyana Dollar
 	HKD alphabeticCode = "HKD" // Hong Kong Dollar
 	HNL alphabeticCode = "HNL" // Lempira
-	HRK alphabeticCode = "HRK" // Kuna
 	HTG alphabeticCode = "HTG" // Gourde
 	HUF alphabeticCode = "HUF" // Forint
 	IDR alphabeticCode = "IDR" // Rupiah
