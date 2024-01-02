@@ -101,7 +101,7 @@ func (iso *iso4217) get() error {
 	if err != nil {
 		return err
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 
 	var body []byte
 	if body, err = io.ReadAll(response.Body); err != nil {
@@ -190,7 +190,7 @@ func createFileByTemplate(tempPath, filename string, data interface{}) error {
 	if file, err = os.Create(filename); err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 
 	return temp.Execute(file, data)
 }

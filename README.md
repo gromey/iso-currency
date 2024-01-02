@@ -11,14 +11,14 @@ published: ***2024-01-01***
 `iso-currency` can be installed like any other Go library through `go get`:
 
 ```console
-$ go get github.com/gromey/iso-currency
+go get github.com/gromey/iso-currency
 ```
 
 Or, if you are already using
 [Go Modules](https://github.com/golang/go/wiki/Modules), you may specify a version number as well:
 
 ```console
-$ go get github.com/gromey/iso-currency@latest
+go get github.com/gromey/iso-currency@latest
 ```
 
 ## Getting Started
@@ -88,4 +88,12 @@ If you need, you can create your own currency like this:
 
 	fmt.Printf("ccy: %+v\n", ccy)
 	// ccy: {AlphabeticCode:YAC NumericCode:123 MinorUnits:N.A. Name:YouCurrencyName CountryNames:[YouCountryName]}
+```
+
+### Internal
+
+To update the library:
+
+```console
+go generate
 ```
