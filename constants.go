@@ -100,7 +100,6 @@ const (
 	MRU alphabeticCode = "MRU" // Ouguiya
 	MUR alphabeticCode = "MUR" // Mauritius Rupee
 	MVR alphabeticCode = "MVR" // Rufiyaa
-	MWK alphabeticCode = "MWK" // Malawi Kwacha
 	MXN alphabeticCode = "MXN" // Mexican Peso
 	MXV alphabeticCode = "MXV" // Mexican Unidad de Inversion (UDI)
 	MYR alphabeticCode = "MYR" // Malaysian Ringgit
@@ -113,14 +112,12 @@ const (
 	NZD alphabeticCode = "NZD" // New Zealand Dollar
 	OMR alphabeticCode = "OMR" // Rial Omani
 	PAB alphabeticCode = "PAB" // Balboa
-	PEN alphabeticCode = "PEN" // Sol
 	PGK alphabeticCode = "PGK" // Kina
 	PHP alphabeticCode = "PHP" // Philippine Peso
 	PKR alphabeticCode = "PKR" // Pakistan Rupee
 	PLN alphabeticCode = "PLN" // Zloty
 	PYG alphabeticCode = "PYG" // Guarani
 	QAR alphabeticCode = "QAR" // Qatari Rial
-	RON alphabeticCode = "RON" // Romanian Leu
 	RSD alphabeticCode = "RSD" // Serbian Dinar
 	RUB alphabeticCode = "RUB" // Russian Ruble
 	RWF alphabeticCode = "RWF" // Rwanda Franc
@@ -138,13 +135,11 @@ const (
 	STN alphabeticCode = "STN" // Dobra
 	SVC alphabeticCode = "SVC" // El Salvador Colon
 	SYP alphabeticCode = "SYP" // Syrian Pound
-	SZL alphabeticCode = "SZL" // Lilangeni
 	THB alphabeticCode = "THB" // Baht
 	TJS alphabeticCode = "TJS" // Somoni
 	TMT alphabeticCode = "TMT" // Turkmenistan New Manat
 	TND alphabeticCode = "TND" // Tunisian Dinar
 	TOP alphabeticCode = "TOP" // Pa’anga
-	TRY alphabeticCode = "TRY" // Turkish Lira
 	TTD alphabeticCode = "TTD" // Trinidad and Tobago Dollar
 	TWD alphabeticCode = "TWD" // New Taiwan Dollar
 	TZS alphabeticCode = "TZS" // Tanzanian Shilling
@@ -181,5 +176,6 @@ const (
 	YER alphabeticCode = "YER" // Yemeni Rial
 	ZAR alphabeticCode = "ZAR" // Rand
 	ZMW alphabeticCode = "ZMW" // Zambian Kwacha
+	ZWG alphabeticCode = "ZWG" // Zimbabwe Gold
 	ZWL alphabeticCode = "ZWL" // Zimbabwe Dollar
 )
