@@ -11,13 +11,6 @@ published: ***2024-06-25***
 `iso-currency` can be installed like any other Go library through `go get`:
 
 ```console
-go get github.com/gromey/iso-currency
-```
-
-Or, if you are already using
-[Go Modules](https://github.com/golang/go/wiki/Modules), you may specify a version number as well:
-
-```console
 go get github.com/gromey/iso-currency@latest
 ```
 
